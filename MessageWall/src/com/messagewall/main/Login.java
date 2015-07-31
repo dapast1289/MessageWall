@@ -1,20 +1,27 @@
-package com.messagewall;
+package com.messagewall.main;
+
+import com.messagewall.R;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class Login extends Activity {
 
+	private final static String tag = "Login.java";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.d(tag, "onCreate()");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_layout);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		Log.d(tag, "onCreateOptionsMenu()");
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.login, menu);
 		return true;
@@ -22,11 +29,13 @@ public class Login extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.d(tag, "onOptionsItemSelected()");
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
+			Log.d(tag, "id == R.id.action_settings");
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
