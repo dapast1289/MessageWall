@@ -65,6 +65,10 @@ public class Login extends Activity implements OnClickListener {
 			String member_id = id.getText().toString().trim();
 			String member_pasword = pasword.getText().toString().trim();
 			new MemberLogin(member_id, member_pasword).execute();
+			// User.id = "lulucat";
+			// Intent intent = new Intent();
+			// intent.setClass(Login.this, Kanban.class);
+			// startActivity(intent);
 			break;
 		case R.id.btn_loging_guess:
 			Log.d(tag, "onClick(View R.id.btn_loging_guess)");
@@ -123,18 +127,22 @@ public class Login extends Activity implements OnClickListener {
 				success = result.getBoolean("success");
 				msg = result.getString("message");
 			} catch (JSONException e) {
-				Toast.makeText(mContext, "網際網路沒有連結" + msg, Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext, "網際網路沒有連結" + msg, Toast.LENGTH_SHORT)
+						.show();
 				e.printStackTrace();
 			}
 			if (msg != null) {
 				Toast.makeText(mContext, "" + msg, Toast.LENGTH_SHORT).show();
 			}
 			if (success) {
+				Log.i(tag, "login succes");
 				// 登入成功
 				User.id = id;
 				Intent intent = new Intent();
 				intent.setClass(Login.this, Kanban.class);
 				startActivity(intent);
+			} else {
+				Log.i(msg, "login fail");
 			}
 
 		}
@@ -153,9 +161,6 @@ public class Login extends Activity implements OnClickListener {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Log.d(tag, "onOptionsItemSelected()");
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			Log.d(tag, "id == R.id.action_settings");

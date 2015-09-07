@@ -40,7 +40,7 @@ public class JSONParser {
 
 		// Making HTTP request
 		try {
-
+			
 			// check for request method
 			if (method == "POST") {
 				// request method is POST
@@ -50,16 +50,18 @@ public class JSONParser {
 				httpPost.setEntity(new UrlEncodedFormEntity(params, "utf-8"));
 
 				HttpResponse httpResponse = httpClient.execute(httpPost);
+				Log.d(tag, "httpPosturl = " + httpPost.getURI());
 				HttpEntity httpEntity = httpResponse.getEntity();
 				is = httpEntity.getContent();
 
 			} else if (method == "GET") {
-				// request method is GET
 				Log.d(tag, "Json_GET()");
+				// request method is GET
 				DefaultHttpClient httpClient = new DefaultHttpClient();
 				String paramString = URLEncodedUtils.format(params, "utf-8");
 				url += "?" + paramString;
 				HttpGet httpGet = new HttpGet(url);
+				Log.d(tag, "httpGet url = " + httpGet.getURI());
 				HttpResponse httpResponse = httpClient.execute(httpGet);
 				HttpEntity httpEntity = httpResponse.getEntity();
 				is = httpEntity.getContent();
@@ -75,7 +77,6 @@ public class JSONParser {
 			Log.d(tag, "IOException e");
 			e.printStackTrace();
 		}
-		Log.d(tag, "out e");
 
 		try {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(

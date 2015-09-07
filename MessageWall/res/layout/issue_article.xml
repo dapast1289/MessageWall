@@ -36,7 +36,8 @@
             android:ems="10"
             android:hint="輸入標題"
             android:inputType="text"
-            android:textColor="@color/black" />
+            android:textColor="@color/white"
+            android:textCursorDrawable="@null" />
 
         <TextView
             android:layout_width="match_parent"
@@ -51,7 +52,8 @@
             android:ems="10"
             android:hint="輸入文章內容"
             android:inputType="textMultiLine"
-            android:textColor="@color/black" />
+            android:textColor="@color/white"
+            android:textCursorDrawable="@null" />
     </LinearLayout>
 
     <TableRow

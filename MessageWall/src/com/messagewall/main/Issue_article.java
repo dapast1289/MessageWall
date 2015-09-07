@@ -30,7 +30,7 @@ import com.messagewall.json.JSONParser;
 
 /**
  * @author Leo
- * @description 發表文章
+ * @description 紀錄標題和內容，發表文章
  */
 
 public class Issue_article extends Fragment implements OnClickListener {
@@ -43,11 +43,13 @@ public class Issue_article extends Fragment implements OnClickListener {
 	private Button btn_issue2Server;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		Log.i(tag, "onCreateView...");
 		View view = inflater.inflate(R.layout.issue_article, container, false);
 		article_title = (EditText) view.findViewById(R.id.edit_article_title);
-		article_content = (EditText) view.findViewById(R.id.edit_article_content);
+		article_content = (EditText) view
+				.findViewById(R.id.edit_article_content);
 		btn_issue2Server = (Button) view.findViewById(R.id.btn_issue2Server);
 		btn_issue2Server.setOnClickListener(this);
 		this.mContext = getActivity();
@@ -58,6 +60,7 @@ public class Issue_article extends Fragment implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_issue2Server:
+			Log.d(tag, "你按了 傳送 按鈕");
 			String title = article_title.getText().toString().trim();
 			String content = article_content.getText().toString().trim();
 			new IssueArticle(User.id, title, content).execute();
@@ -67,6 +70,8 @@ public class Issue_article extends Fragment implements OnClickListener {
 		}
 	}
 
+	
+	// 發表文章Thread
 	public class IssueArticle extends AsyncTask<String, String, JSONObject> {
 
 		private ProgressDialog pDialog;
@@ -75,6 +80,8 @@ public class Issue_article extends Fragment implements OnClickListener {
 		private String content;
 
 		public IssueArticle(String id, String title, String content) {
+			Log.d(tag, "IssueArticle(String " + id + ", String " + title
+					+ ", String " + content + ")");
 			this.title = title;
 			this.author = id;
 			this.content = content;
@@ -82,6 +89,7 @@ public class Issue_article extends Fragment implements OnClickListener {
 
 		@Override
 		protected void onPreExecute() {
+			Log.i(tag, "onPreExecute()");
 			pDialog = new ProgressDialog(mContext);
 			pDialog.setMessage("Loading..., Please wait...");
 			pDialog.setCancelable(false);
@@ -90,20 +98,23 @@ public class Issue_article extends Fragment implements OnClickListener {
 
 		@Override
 		protected JSONObject doInBackground(String... param) {
+			Log.i(tag, "doInBackground()");
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			// Log.d(tag, "author = " + author + "  title = " + title + "  content = " + content);
 			params.add(new BasicNameValuePair("author", author));
 			params.add(new BasicNameValuePair("title", title));
 			params.add(new BasicNameValuePair("content", content));
+			Log.d(tag, "list.add()");
 			JSONParser jsonParser = new JSONParser();
-			JSONObject json = jsonParser.makeHttpRequest(Global.URL_create_article, "POST", params);
-			// Log.d(tag, "result = " + json);
+			JSONObject json = jsonParser.makeHttpRequest(
+					Global.URL_create_article, "POST", params);
+			Log.d(tag, "result = " + json);
 			pDialog.dismiss();
 			return json;
 		}
 
 		@Override
 		protected void onPostExecute(JSONObject result) {
+			Log.i(tag, "onPostExecute()");
 			String msg = null;
 			// boolean success = false;
 			try {

@@ -39,7 +39,8 @@ import com.messagewall.core.User;
 import com.messagewall.db.Article;
 import com.messagewall.json.JSONParser;
 
-public class Kanban extends FragmentActivity implements OnClickListener, OnItemClickListener {
+public class Kanban extends FragmentActivity implements OnClickListener,
+		OnItemClickListener {
 
 	private final static String tag = "Kanban.class";
 
@@ -70,7 +71,9 @@ public class Kanban extends FragmentActivity implements OnClickListener, OnItemC
 		setContentView(R.layout.kanban);
 		mContext = this;
 		fragment_kanban = (TableLayout) findViewById(R.id.fragment_kanBan);
+		Log.d(tag, "註冊fragment_issue");
 		fragment_issue = (TableLayout) findViewById(R.id.fragment_issue);
+		Log.d(tag, "註冊fragment_issue end");
 		fragment_issue.setVisibility(View.INVISIBLE);
 		fragment_article = (TableLayout) findViewById(R.id.fragment_article);
 		fragment_article.setVisibility(View.INVISIBLE);
@@ -87,6 +90,8 @@ public class Kanban extends FragmentActivity implements OnClickListener, OnItemC
 		dialog_search = getSearchDialog();
 		btn_reflesh = (Button) findViewById(R.id.btn_reflesh);
 		btn_reflesh.setOnClickListener(this);
+
+		// 獲取所有文章標題
 		new GetAllArticle().execute();
 	}
 
@@ -136,6 +141,7 @@ public class Kanban extends FragmentActivity implements OnClickListener, OnItemC
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_issue:
+			Log.d(tag, "你按了發表文章");
 			fragment_issue.setVisibility(View.VISIBLE);
 			fragment_kanban.setVisibility(View.INVISIBLE);
 			// Toast.makeText(this, "你按了發表文章", Toast.LENGTH_SHORT).show();
@@ -177,14 +183,16 @@ public class Kanban extends FragmentActivity implements OnClickListener, OnItemC
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		Log.d(tag, "onItemClick(AdapterView<?> " + parent + ", View " + view + ", int " + position
-				+ ", long " + id + ")");
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		Log.d(tag, "onItemClick(AdapterView<?> " + parent + ", View " + view
+				+ ", int " + position + ", long " + id + ")");
 		fragment_article.setVisibility(View.VISIBLE);
 		fragment_kanban.setVisibility(View.INVISIBLE);
 		Aticle_board.adapter.init();
 		Aticle_board.adapter.setItem(adapter.getItem(position));
-		new GetArticleMsg(this, ""+adapter.getItem(position).getPid(), User.id).execute();
+		new GetArticleMsg(this, "" + adapter.getItem(position).getPid(),
+				User.id).execute();
 
 	}
 
@@ -202,12 +210,15 @@ public class Kanban extends FragmentActivity implements OnClickListener, OnItemC
 		}
 	}
 
+	// GetAllArticle Thread
 	public class GetAllArticle extends AsyncTask<String, String, JSONObject> {
 
 		private ProgressDialog pDialog;
+		private final static String tag = "Kanban.class";
 
 		@Override
 		protected void onPreExecute() {
+			Log.i(tag, "onPreExecute()");
 			pDialog = new ProgressDialog(mContext);
 			pDialog.setMessage("Loading..., Please wait...");
 			pDialog.setCancelable(false);
@@ -216,9 +227,11 @@ public class Kanban extends FragmentActivity implements OnClickListener, OnItemC
 
 		@Override
 		protected JSONObject doInBackground(String... param) {
+			Log.i(tag, "doInBackground()");
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			JSONParser jsonParser = new JSONParser();
-			JSONObject json = jsonParser.makeHttpRequest(Global.URL_get_all_article, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(
+					Global.URL_get_all_article, "GET", params);
 			pDialog.dismiss();
 			return json;
 		}
@@ -248,7 +261,8 @@ public class Kanban extends FragmentActivity implements OnClickListener, OnItemC
 						String author = c.getString("author");
 						int popularity = c.getInt("popularity");
 						String content = c.getString("content");
-						Article arc = new Article(pid, title, author, popularity, content);
+						Article arc = new Article(pid, title, author,
+								popularity, content);
 						list.add(arc);
 					}
 				} catch (JSONException e) {
@@ -297,7 +311,8 @@ public class Kanban extends FragmentActivity implements OnClickListener, OnItemC
 				break;
 			}
 			JSONParser jsonParser = new JSONParser();
-			JSONObject json = jsonParser.makeHttpRequest(Global.URL_search_article, "GET", params);
+			JSONObject json = jsonParser.makeHttpRequest(
+					Global.URL_search_article, "GET", params);
 			Log.d(tag, "json = " + json.toString());
 			pDialog.dismiss();
 			return json;
@@ -328,7 +343,8 @@ public class Kanban extends FragmentActivity implements OnClickListener, OnItemC
 						String author = c.getString("author");
 						int popularity = c.getInt("popularity");
 						String content = c.getString("content");
-						Article arc = new Article(pid, title, author, popularity, content);
+						Article arc = new Article(pid, title, author,
+								popularity, content);
 						list.add(arc);
 					}
 				} catch (JSONException e) {
