@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.messagewall.R;
 import com.messagewall.db.Article;
-import com.messagewall.db.Msg;
+import com.messagewall.db.Lmsgs;
 
 public class ArticleAdapter extends BaseAdapter {
 
@@ -19,12 +19,12 @@ public class ArticleAdapter extends BaseAdapter {
 
 	private LayoutInflater myInflater;
 	private Article mArticle;
-	private ArrayList<Msg> mMsg;
+	private ArrayList<Lmsgs> mMsg;
 
 	public ArticleAdapter(Context ctxt, Article mArticle) {
 		myInflater = LayoutInflater.from(ctxt);
 		this.mArticle = mArticle;
-		this.mMsg = new ArrayList<Msg>();
+		this.mMsg = new ArrayList<Lmsgs>();
 	}
 
 	public void setItem(Article mArticle) {
@@ -32,14 +32,14 @@ public class ArticleAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 	
-	public void setMsg(ArrayList<Msg> list){
+	public void setMsg(ArrayList<Lmsgs> list){
 		this.mMsg = list;
 		notifyDataSetChanged();
 	}
 	
 	public void init(){
 		this.mArticle = new Article();
-		this.mMsg = new ArrayList<Msg>();
+		this.mMsg = new ArrayList<Lmsgs>();
 		notifyDataSetChanged();
 	}
 

@@ -16,10 +16,17 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.messagewall.core.Global;
-import com.messagewall.db.Msg;
+import com.messagewall.db.Lmsgs;
 import com.messagewall.json.JSONParser;
 import com.messagewall.main.Aticle_board;
 
+
+/**
+ * 
+ * @author Leo
+ * 取得文章底下所有留言
+ *
+ */
 public class GetArticleMsg extends AsyncTask<String, String, JSONObject> {
 	
 	private final static String tag = "GetArticleMsg.class thread";
@@ -27,13 +34,11 @@ public class GetArticleMsg extends AsyncTask<String, String, JSONObject> {
 	private ProgressDialog pDialog;
 	private Context mctxt;
 	private String article_pid;
-	private String author;
 
-	public GetArticleMsg(Context mctxt, String article_pid, String author) {
+	public GetArticleMsg(Context mctxt, String article_pid) {
+		Log.d(tag, "article_pid = " + article_pid);
 		this.mctxt = mctxt;
 		this.article_pid = article_pid;
-		this.author = author;
-		Log.d(tag, "article_pid = " + article_pid);
 	}
 
 	@Override
@@ -48,7 +53,7 @@ public class GetArticleMsg extends AsyncTask<String, String, JSONObject> {
 	protected JSONObject doInBackground(String... param) {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("article_pid", article_pid));
-		params.add(new BasicNameValuePair("author", author));
+//		params.add(new BasicNameValuePair("author", author));
 		JSONParser jsonParser = new JSONParser();
 		JSONObject json = jsonParser.makeHttpRequest(Global.URL_get_article_lmsg, "GET", params);
 		Log.d(tag, "json = " + json.toString());
@@ -61,7 +66,7 @@ public class GetArticleMsg extends AsyncTask<String, String, JSONObject> {
 		String msg = null;
 		boolean success = false;
 		JSONArray Mmsg = null;
-		ArrayList<Msg> list = new ArrayList<Msg>();
+		ArrayList<Lmsgs> list = new ArrayList<Lmsgs>();
 		try {
 			success = result.getBoolean("success");
 			msg = result.getString("message");
@@ -71,6 +76,8 @@ public class GetArticleMsg extends AsyncTask<String, String, JSONObject> {
 		if (msg != null) {
 			Toast.makeText(mctxt, "" + msg, Toast.LENGTH_SHORT).show();
 		}
+		
+		//抽取回傳的資料串
 		if (success) {
 			try {
 				Mmsg = result.getJSONArray("lmsgss");
@@ -80,7 +87,7 @@ public class GetArticleMsg extends AsyncTask<String, String, JSONObject> {
 					int article_pid = c.getInt("article_pid");
 					String author = c.getString("author");
 					String LMSG = c.getString("msg");
-					Msg mm = new Msg(pid, article_pid, author, LMSG);
+					Lmsgs mm = new Lmsgs(pid, article_pid, author, LMSG);
 					list.add(mm);
 				}
 			} catch (JSONException e) {

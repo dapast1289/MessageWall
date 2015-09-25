@@ -5,4 +5,6 @@
     <color name="selectColor">#7744FF</color>
     <color name="article_title">#888888</color>
     <color name="yellow">#FFBB00</color>
+    
+    <color name="transparent_color">#00000000</color>
 </resources>

@@ -48,7 +48,6 @@ public class JSONParser {
 				DefaultHttpClient httpClient = new DefaultHttpClient();
 				HttpPost httpPost = new HttpPost(url);
 				httpPost.setEntity(new UrlEncodedFormEntity(params, "utf-8"));
-
 				HttpResponse httpResponse = httpClient.execute(httpPost);
 				Log.d(tag, "httpPosturl = " + httpPost.getURI());
 				HttpEntity httpEntity = httpResponse.getEntity();
@@ -88,6 +87,7 @@ public class JSONParser {
 			}
 			is.close();
 			json = sb.toString();
+			Log.d(tag, "json = " + json);
 		} catch (Exception e) {
 			Log.e("Buffer Error", "Error converting result " + e.toString());
 		}

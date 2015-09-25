@@ -31,7 +31,7 @@ import com.messagewall.adapter.ArticleAdapter;
 import com.messagewall.core.Global;
 import com.messagewall.core.User;
 import com.messagewall.db.Article;
-import com.messagewall.db.Msg;
+import com.messagewall.db.Lmsgs;
 import com.messagewall.json.JSONParser;
 
 /*
@@ -95,7 +95,7 @@ public class Aticle_board extends Fragment implements OnClickListener {
 		return dialog.create();
 	}
 
-	// 留言thread
+	// 創建留言thread
 	public class LeaveMsg extends AsyncTask<String, String, JSONObject> {
 
 		private ProgressDialog pDialog;
@@ -174,18 +174,21 @@ public class Aticle_board extends Fragment implements OnClickListener {
 
 		@Override
 		protected void onPostExecute(JSONObject result) {
-			String msg = null;
+			String message = null;
 			boolean success = false;
 			JSONArray Mmsg = null;
-			ArrayList<Msg> list = new ArrayList<Msg>();
+			ArrayList<Lmsgs> list = new ArrayList<Lmsgs>();
 			try {
 				success = result.getBoolean("success");
-				msg = result.getString("message");
+				message = result.getString("message");
 			} catch (JSONException e) {
-				e.printStackTrace();
+//				e.printStackTrace();
+				if( message == null ){
+					Log.w(tag, " no msg");
+				}
 			}
-			if (msg != null) {
-				Toast.makeText(getActivity(), "" + msg, Toast.LENGTH_SHORT)
+			if (message != null) {
+				Toast.makeText(getActivity(), "" + message, Toast.LENGTH_SHORT)
 						.show();
 			}
 			if (success) {
@@ -193,11 +196,12 @@ public class Aticle_board extends Fragment implements OnClickListener {
 					Mmsg = result.getJSONArray("lmsgss");
 					for (int i = 0; i < Mmsg.length(); i++) {
 						JSONObject c = Mmsg.getJSONObject(i);
-						int pid = c.getInt("pid");
 						int article_pid = c.getInt("article_pid");
+						int pid = c.getInt("pid");
 						String author = c.getString("author");
 						String LMSG = c.getString("msg");
-						Msg mm = new Msg(pid, article_pid, author, LMSG);
+//						String Created = c.getString("created"); 
+						Lmsgs mm = new Lmsgs(pid, article_pid, author, LMSG);
 						list.add(mm);
 					}
 				} catch (JSONException e) {

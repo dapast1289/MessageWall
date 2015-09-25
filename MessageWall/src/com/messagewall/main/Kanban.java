@@ -95,7 +95,7 @@ public class Kanban extends FragmentActivity implements OnClickListener,
 		new GetAllArticle().execute();
 	}
 
-	// 搜尋 Dialog
+	// 搜尋 Dialog 介面
 	public Dialog getSearchDialog() {
 		Log.d(tag, "getSearchDialog()");
 		LayoutInflater factory = LayoutInflater.from(this);
@@ -109,7 +109,7 @@ public class Kanban extends FragmentActivity implements OnClickListener,
 		popularity.setOnClickListener(this);
 		type = R.id.search_title;
 		input = (EditText) view.findViewById(R.id.search_edittext);
-		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+		AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.ThemeDialogCustom);
 		dialog.setTitle("搜尋");
 		dialog.setView(view);
 		dialog.setPositiveButton("確定", new DialogInterface.OnClickListener() {
@@ -136,6 +136,8 @@ public class Kanban extends FragmentActivity implements OnClickListener,
 		});
 		return dialog.create();
 	}
+	
+	
 
 	@Override
 	public void onClick(View v) {
@@ -191,8 +193,8 @@ public class Kanban extends FragmentActivity implements OnClickListener,
 		fragment_kanban.setVisibility(View.INVISIBLE);
 		Aticle_board.adapter.init();
 		Aticle_board.adapter.setItem(adapter.getItem(position));
-		new GetArticleMsg(this, "" + adapter.getItem(position).getPid(),
-				User.id).execute();
+		//抓取選取文章底下的留言串
+		new GetArticleMsg(this, "" + adapter.getItem(position).getPid()).execute();
 
 	}
 
@@ -210,7 +212,7 @@ public class Kanban extends FragmentActivity implements OnClickListener,
 		}
 	}
 
-	// GetAllArticle Thread
+	// GetAllArticle Thread 獲取所有文章列表
 	public class GetAllArticle extends AsyncTask<String, String, JSONObject> {
 
 		private ProgressDialog pDialog;

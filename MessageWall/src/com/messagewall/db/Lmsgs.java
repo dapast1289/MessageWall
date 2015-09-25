@@ -1,25 +1,17 @@
 package com.messagewall.db;
 
-public class Msg {
+public class Lmsgs {
 
-	private int pid;
 	private int article_pid;
+	private int pid;
 	private String author;
 	private String msg;
 
-	public Msg(int pid, int article_pid, String author, String msg) {
-		this.pid = pid;
+	public Lmsgs(int article_pid, int pid, String author, String msg) {
 		this.article_pid = article_pid;
+		this.pid = pid;
 		this.author = author;
 		this.msg = msg;
-	}
-
-	public int getPid() {
-		return pid;
-	}
-
-	public void setPid(int pid) {
-		this.pid = pid;
 	}
 
 	public int getArticle_pid() {
@@ -30,6 +22,14 @@ public class Msg {
 		this.article_pid = article_pid;
 	}
 
+	public int getPid() {
+		return pid;
+	}
+	
+	public void setPid(int pid) {
+		this.pid = pid;
+	}
+	
 	public String getAuthor() {
 		return author;
 	}
